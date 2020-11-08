@@ -63,6 +63,7 @@ extern "C" {
         #endif
         self->module = new (m_new_obj(SD)) SD(cs,spi,fre);
     }
+	
     void common_hal_sdcard_deinit(abstract_module_t *self){
         sdcard.~SD();
     }

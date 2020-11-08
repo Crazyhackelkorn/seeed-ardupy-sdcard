@@ -30,7 +30,6 @@
 #include "py/runtime.h"
 #include "py/obj.h"
 #include "shared-bindings/util.h"
-#include "wrapper_ardupy_sdcard.h"
 
 void common_hal_sdcard_construct(abstract_module_t *self, size_t n_args, const mp_obj_t *args);
 void common_hal_sdcard_deinit(abstract_module_t *self);
