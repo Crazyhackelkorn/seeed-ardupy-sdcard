@@ -68,7 +68,7 @@ mp_obj_t sdcard_writeBlocks(size_t n_args, const mp_obj_t *pos_args, mp_map_t *k
 	unsigned int count;
 	uint8_t* buffer;
 	mp_obj_get_array(pos_args[2],&count,&buffer);
-    common_hal_sdcard_writeblocks(self, buffer, sector, count;
+    common_hal_sdcard_writeblocks(self, buffer, sector, count);
     return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_writeBlocks_obj, 2, sdcard_writeBlocks);

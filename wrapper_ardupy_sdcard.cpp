@@ -33,6 +33,7 @@ extern "C"{
 #include "py/objtype.h"
 #include "py/runtime.h"
 #include "shared-bindings/util.h"
+#include "shared-bindings/arduino_util.h"
 }
 
 #define sdcard     (*(SD *)self->module)
@@ -59,8 +60,9 @@ extern "C" {
             		fre = mp_obj_get_int(args[2]);
         		}
 			}
+			#endif
 		}
-        #endif
+        
         self->module = new (m_new_obj(SD)) SD(cs,spi,fre);
     }
 	
