@@ -29,6 +29,7 @@
 #include "py/objtype.h"
 #include "py/runtime.h"
 #include "py/obj.h"
+#include "py/objarray.h"
 #include "shared-bindings/util.h"
 
 void common_hal_sdcard_construct(abstract_module_t *self, size_t n_args, const mp_obj_t *args);
