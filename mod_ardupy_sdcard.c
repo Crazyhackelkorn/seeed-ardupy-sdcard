@@ -56,7 +56,7 @@ mp_obj_t sdcard_readBlocks(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw
 	unsigned int count;
 	//uint8_t* buffer=mp_obj_str_get_data(pos_args[2],&count);
 	//mp_obj_get_array(pos_args[2],&count,&buffer);
-	_mp_obj_array_t* buf=MP_OBJ_TO_PTR(pos_args[1])
+	mp_obj_array_t* buf=MP_OBJ_TO_PTR(pos_args[1]);
 	count=buf->len/(common_hal_sdcard_ioctl(self, 5));
     common_hal_sdcard_readblocks(self, buf->items, sector, count);
     return mp_const_none;
@@ -71,7 +71,7 @@ mp_obj_t sdcard_writeBlocks(size_t n_args, const mp_obj_t *pos_args, mp_map_t *k
 	//uint8_t* buffer=mp_obj_str_get_data(pos_args[2],&count);
 	//mp_obj_get_array(pos_args[2],&count,&buffer);
 	//count=count/(common_hal_sdcard_ioctl(self, 5));
-	_mp_obj_array_t* buf=MP_OBJ_TO_PTR(pos_args[1])
+	mp_obj_array_t* buf=MP_OBJ_TO_PTR(pos_args[1]);
 	count=buf->len/(common_hal_sdcard_ioctl(self, 5));
     common_hal_sdcard_writeblocks(self, buf->items, sector, count);
     return mp_const_none;
