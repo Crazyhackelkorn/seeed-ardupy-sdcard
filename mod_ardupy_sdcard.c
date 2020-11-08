@@ -91,7 +91,7 @@ void sdcard_obj_attr(mp_obj_t self_in, qstr attr, mp_obj_t *dest){
     float number;
     if (dest[0] == MP_OBJ_NULL) {
         if (attr == MP_QSTR_type) {
-            value = common_hal_bme280_type(self); // Call previously defined unction
+            value = common_hal_sdcard_type(self); // Call previously defined unction
             dest[0] = mp_obj_new_int(value); // This the MicroPython float type, should match with the data type
             return;
         }
