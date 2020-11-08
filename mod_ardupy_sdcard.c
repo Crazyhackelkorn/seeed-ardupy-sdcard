@@ -77,9 +77,9 @@ mp_obj_t sdcard_ioctl(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args
 {
     abstract_module_t *self = (abstract_module_t *)pos_args[0];
     unsigned long long ops = mp_obj_get_int(pos_args[1]);
-	uint8_t* arg;
-    common_hal_sdcard_ioctl(self, ops,arg);
-    return mp_obj_new_int(*arg);
+	unsigned long arg;
+    common_hal_sdcard_ioctl(self, ops, &arg);
+    return mp_obj_new_int(arg);
 }
 MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_ioctl_obj, 2, sdcard_ioctl);
 
