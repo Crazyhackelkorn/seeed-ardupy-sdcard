@@ -75,8 +75,8 @@ extern "C" {
     uint32_t common_hal_sdcard_writeblocks(abstract_module_t *self, uint8_t *buffer, unsigned long long sector, unsigned int count){
         return sdcard.write(buffer, sector, count);
     }
-    uint32_t common_hal_sdcard_ioctl(abstract_module_t *self, uint8_t ops, void* arg){
-        return sdcard.ioctl(ops, arg);
+    uint32_t common_hal_sdcard_ioctl(abstract_module_t *self, uint8_t ops){
+        return sdcard.ioctl(ops);
     }
     uint8_t common_hal_sdcard_type(abstract_module_t *self){
         return sdcard.sdcard_type();

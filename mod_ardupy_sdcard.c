@@ -35,7 +35,7 @@ void common_hal_sdcard_construct(abstract_module_t *self, size_t n_args, const m
 void common_hal_sdcard_deinit(abstract_module_t *self);
 uint32_t common_hal_sdcard_readblocks(abstract_module_t *self, uint8_t *buffer, unsigned long long sector, unsigned int count);
 uint32_t common_hal_sdcard_writeblocks(abstract_module_t *self, uint8_t *buffer, unsigned long long sector, unsigned int count);
-uint32_t common_hal_sdcard_ioctl(abstract_module_t *self, uint8_t ops, void* arg);
+uint32_t common_hal_sdcard_ioctl(abstract_module_t *self, uint8_t ops);
 uint8_t common_hal_sdcard_type(abstract_module_t *self);
 
 extern const mp_obj_type_t sdcard_type;
@@ -77,9 +77,8 @@ mp_obj_t sdcard_ioctl(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args
 {
     abstract_module_t *self = (abstract_module_t *)pos_args[0];
     unsigned long long ops = mp_obj_get_int(pos_args[1]);
-	unsigned long arg;
-    common_hal_sdcard_ioctl(self, ops, &arg);
-    return mp_obj_new_int(arg);
+    uint32_t res = common_hal_sdcard_ioctl(self, ops);
+    return mp_obj_new_int(res);
 }
 MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_ioctl_obj, 2, sdcard_ioctl);
 
