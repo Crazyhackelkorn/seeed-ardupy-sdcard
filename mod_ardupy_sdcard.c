@@ -55,8 +55,6 @@ mp_obj_t sdcard_readBlocks(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw
     abstract_module_t *self = (abstract_module_t *)pos_args[0];
     unsigned long long sector = mp_obj_get_int(pos_args[1]);
 	unsigned int count;
-	//uint8_t* buffer=mp_obj_str_get_data(pos_args[2],&count);
-	//mp_obj_get_array(pos_args[2],&count,&buffer);
 	mp_obj_array_t* buf=MP_OBJ_TO_PTR(pos_args[2]);
 	count=buf->len/(common_hal_sdcard_ioctl(self, 5));
     common_hal_sdcard_readblocks(self, buf->items, sector, count);
@@ -69,9 +67,6 @@ mp_obj_t sdcard_writeBlocks(size_t n_args, const mp_obj_t *pos_args, mp_map_t *k
     abstract_module_t *self = (abstract_module_t *)pos_args[0];
     unsigned long long sector = mp_obj_get_int(pos_args[1]);
 	unsigned int count;
-	//uint8_t* buffer=mp_obj_str_get_data(pos_args[2],&count);
-	//mp_obj_get_array(pos_args[2],&count,&buffer);
-	//count=count/(common_hal_sdcard_ioctl(self, 5));
 	mp_obj_array_t* buf=MP_OBJ_TO_PTR(pos_args[2]);
 	count=buf->len/(common_hal_sdcard_ioctl(self, 5));
     common_hal_sdcard_writeblocks(self, buf->items, sector, count);
@@ -118,7 +113,7 @@ MP_DEFINE_CONST_DICT(sdcard_locals_dict, sdcard_locals_dict_table);
 
 const mp_obj_type_t sdcard_type = {
     {&mp_type_type},
-    .name = MP_QSTR_SDCard,
+    .name = MP_QSTR_sdcard,
     .make_new = sdcard_make_new,
     .locals_dict = (mp_obj_t)&sdcard_locals_dict,
     .attr = sdcard_obj_attr};
