@@ -8,7 +8,7 @@ An ArduPy library for SD card. Mount a FAT formatted SD card in to the vFAT of M
 ```shell
 pip3 install aip
 ```
-- Build firmware with Seeed ArduPy LIS3DHTR
+- Build firmware with Seeed ArduPy SD Card
 ```shell
 aip install https://github.com/Crazyhackelkorn/seeed-ardupy-sdcard
 aip build
