@@ -18,12 +18,17 @@ aip build
 aip flash [Ardupy Bin PATH]
 ```
 For more examples of using AIP, please refer to [AIP](https://github.com/Seeed-Studio/ardupy-aip).
+
 ## Usage
+**Note:** Tested code with Wio Terminal and an 32GB SanDisk microSDHC (FAT32)
+
 ```python
 import os
 from arduino import sdcard
+# from machine import Map
 
 SD=sdcard()
+# sdcard(64,Map.SPI2,5000000) # equal for Wio Terminal
 os.mount(SD,'/sd')
 
 with open('/sd/hello.txt', 'w') as f:
@@ -32,82 +37,72 @@ with open('/sd/hello.txt', 'w') as f:
 print(open('/sd/hello.txt').read())
 ```
 ## API Reference
-later
-<!---
-- **available(*void*) : bool** - available
+- **available(*mode\<char>*) : bool** - available
 ```python
-if lis.available():
-    print("X: " + lis.x)
+# simple attribute check
+if SD.available():
+    print(open('/sd/hello.txt').read())
+	
+# reinit SD card. Should detect ejected SD card.
+if SD.available('f'):
+    print(open('/sd/hello.txt').read())
+else:
+	os.umount('/sd')
+	SD.umount()
 ```
 
-- **setPoweMode(*mode\<uint8_t\>*) : void** - set power mode
+- **type : int** - SD type
 ```python
-# Set power mode
-lis.setPoweMode(0) #POWER_MODE_NORMAL 
-lis.setPoweMode(1) #POWER_MODE_LOW 
-```
-- **setFullScaleRange(*range\<uint8_t\>*) : void** - set full scale range
-```python
-lis.setFullScaleRange(0) # LIS3DHTR_RANGE_2G 
-lis.setFullScaleRange(1) # LIS3DHTR_RANGE_4G
-lis.setFullScaleRange(2) # IS3DHTR_RANGE_8G
-lis.setFullScaleRange(3) # LIS3DHTR_RANGE_16G
-```
-- **setOutputDataRate(*rate\<uint8_t\>*) : void** - set output data rate
-```python
-lis.setOutputDataRate(0) # LIS3DHTR_DATARATE_POWERDOWN 
-lis.setOutputDataRate(2) # LIS3DHTR_DATARATE_10HZ
-lis.setOutputDataRate(3) # LIS3DHTR_DATARATE_25HZ
-lis.setOutputDataRate(4) # LIS3DHTR_DATARATE_50HZ
-lis.setOutputDataRate(5) # LIS3DHTR_DATARATE_100HZ
-lis.setOutputDataRate(6) # LIS3DHTR_DATARATE_400HZ
-lis.setOutputDataRate(7) # LIS3DHTR_DATARATE_400HZ
-lis.setOutputDataRate(8) # LIS3DHTR_DATARATE_1_6KH
-lis.setOutputDataRate(9) # LIS3DHTR_DATARATE_5KHZ
-```
-- **setHighSolution(*rate\<bool\>*) : void** set high solution
-```python
-lis.setHighSolution(True) # HighSolution enable
-lis.setHighSolution(False) # HighSolution disable
-```
-- **openTemp(*void*) : void** - open temperature enable
-```python
-lis.openTemp()
-```
-- **closeTemp(*void*) : void** - close temperature enable
-```python
-lis.closeTemp()
-```
-- **x : float** - get acceleration z
-```python
-x = lis.x
-```
-- **y : float** - get acceleration y
-```python
-y = lis.y
-```
-- **z : float** - get acceleration z
-```python
-z = lis.z
-```
-- **adc1 : uint16_t** - get adc channle 1
-```python
-adc1 = lis.adc1
-```
-- **adc2 : uint16_t** - get adc channle 2
-```python
-adc2 = lis.adc2
-```
-- **adc3 : uint16_t** - get adc channle 3
-```python
-adc3 = lis.adc3
+if SD.type == 0:
+	print("No card")
+elif SD.type == 1:
+	print("MMC card")
+elif SD.type == 2:
+	print("SD card")
+elif SD.type == 3:
+	print("SDHC card")
+elif SD.type == 4:
+	print("Unknown card")
 ```
 
-- **temperature : uint16_t** - get temperature
+- **size : int** - SD physical size in KB
 ```python
-temperature = lis.temperature
+print (SD.size,"KB")
 ```
--->
+
+- **umount(*void*) : void** - deinit SD state, type, sector count
+```python
+os.umount('/sd')
+SD.umount() # isn't needed but so SD.type, SD.size and SD.available() return correct values.
+```
+
+### Block Devise Functions
+For more detail see [uos.AbstractBlockDev](https://docs.micropython.org/en/latest/library/uos.html#uos.AbstractBlockDev)
+
+- **readblocks(*num\<uint64>*,*buf\<bytearray>*) : void** - reads raw data
+```python
+b = bytearray(512) # one block is 512 Byte
+SD.readblocks(0,b)
+print(b)
+```
+
+- **writeblocks(*num\<uint64>*,*buf\<bytearray>*) : void** - writes raw data
+**Note: Don't do this**
+```python
+b = bytearray(512) # one block is 512 Byte
+SD.writeblocks(0,b) #shouldn't be done
+SD.readblocks(0,b)
+print(b)
+```
+
+- **ioctl(*cmd\<uint8>*) : uint64** - additional io functions
+```python
+SD.ioctl(1) # initialise the device / get device status
+SD.ioctl(2) # deinitialise/shutdown the device
+SD.ioctl(3) # sync the device
+SD.ioctl(4) # get a count of the number of blocks
+SD.ioctl(5) # get the number of bytes in a block
+```
 
 ----
 ## License
