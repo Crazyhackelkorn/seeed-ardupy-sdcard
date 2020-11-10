@@ -87,7 +87,9 @@ print(b)
 ```
 
 - **writeblocks(*num\<uint64>*,*buf\<bytearray>*) : void** - writes raw data
+
 **Note: Don't do this**
+
 ```python
 b = bytearray(512) # one block is 512 Byte
 SD.writeblocks(0,b) #shouldn't be done
