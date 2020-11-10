@@ -60,7 +60,7 @@ mp_obj_t sdcard_readBlocks(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw
     common_hal_sdcard_readblocks(self, buf->items, sector, count);
     return mp_const_none;
 }
-MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_readBlocks_obj, 2, sdcard_readBlocks);
+MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_readBlocks_obj, 3, sdcard_readBlocks);
 
 mp_obj_t sdcard_writeBlocks(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)
 {
@@ -72,7 +72,7 @@ mp_obj_t sdcard_writeBlocks(size_t n_args, const mp_obj_t *pos_args, mp_map_t *k
     common_hal_sdcard_writeblocks(self, buf->items, sector, count);
     return mp_const_none;
 }
-MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_writeBlocks_obj, 2, sdcard_writeBlocks);
+MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_writeBlocks_obj, 3, sdcard_writeBlocks);
 
 mp_obj_t sdcard_ioctl(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)
 {
@@ -86,13 +86,12 @@ MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_ioctl_obj, 2, sdcard_ioctl);
 mp_obj_t sdcard_available(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)
 {
     abstract_module_t *self = (abstract_module_t *)pos_args[0];
-	if(n_args==1)
+	if(n_args==2)
 	{
 		size_t len;
 		char* f = mp_obj_str_get_data(pos_args[1],&len);
 		if(len==1 && f[0]=='f') // Force a reinit
 		{
-			mp_obj_print(mp_obj_new_str("reinit",6),PRINT_STR);
 			common_hal_sdcard_ioctl(self, 2);
 		}
 	}
@@ -101,7 +100,7 @@ mp_obj_t sdcard_available(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_
 	uint8_t type = common_hal_sdcard_type(self);
 	if(stat == 0 && type > 0 && type < 4)
 		b = 1;
-    return mp_obj_new_bool(ret_val);
+    return mp_obj_new_bool(b);
 }
 MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_available_obj, 1, sdcard_available);
 
@@ -111,7 +110,7 @@ mp_obj_t sdcard_umount(mp_obj_t self_in)
     return mp_const_none;
 }
 
-MP_DEFINE_CONST_FUN_OBJ_1(sdcard_umount_obj, sdcard_umount;
+MP_DEFINE_CONST_FUN_OBJ_1(sdcard_umount_obj, sdcard_umount);
 
 // attributes
 
@@ -126,7 +125,7 @@ void sdcard_obj_attr(mp_obj_t self_in, qstr attr, mp_obj_t *dest){
             return;
         }
 		else if (attr == MP_QSTR_size) {
-            value = common_hal_sdcard_ioctl(self, 4) * common_hal_sdcard_ioctl(self, 5); // Call previously defined unction
+            value = (common_hal_sdcard_ioctl(self, 4) * (unsigned long long)common_hal_sdcard_ioctl(self, 5)) / 1024; // Call previously defined unction
             dest[0] = mp_obj_new_int(value); // This the MicroPython int type, should match with the data type
             return;
         }

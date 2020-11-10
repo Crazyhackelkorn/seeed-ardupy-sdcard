@@ -1,12 +1,12 @@
 {
     "name": "Seeed ArduPy SD Card ",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/Crazyhackelkorn/seeed-ardupy-sdcard.git"
     },
     "dependencies": [{
         "name": "Seeed_Arduino_SDCard",
-        "url": "https://github.com/Crazyhackelkorn/Seeed_Arduino_SD.git"
+        "url": "https://github.com/Crazyhackelkorn/Seeed_Arduino_SD/archive/v2.0.1.zip"
     }]
 }
