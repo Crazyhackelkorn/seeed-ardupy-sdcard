@@ -83,6 +83,36 @@ mp_obj_t sdcard_ioctl(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args
 }
 MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_ioctl_obj, 2, sdcard_ioctl);
 
+mp_obj_t sdcard_available(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)
+{
+    abstract_module_t *self = (abstract_module_t *)pos_args[0];
+	if(n_args==1)
+	{
+		size_t len;
+		char* f = mp_obj_str_get_data(pos_args[1],&len);
+		if(len==1 && f[0]=='f') // Force a reinit
+		{
+			mp_obj_print(mp_obj_new_str("reinit",6),PRINT_STR);
+			common_hal_sdcard_ioctl(self, 2);
+		}
+	}
+	bool b = 0;
+    uint32_t stat = common_hal_sdcard_ioctl(self, 1);
+	uint8_t type = common_hal_sdcard_type(self);
+	if(stat == 0 && type > 0 && type < 4)
+		b = 1;
+    return mp_obj_new_bool(ret_val);
+}
+MP_DEFINE_CONST_FUN_OBJ_KW(sdcard_available_obj, 1, sdcard_available);
+
+mp_obj_t sdcard_umount(mp_obj_t self_in)
+{
+    common_hal_sdcard_ioctl((abstract_module_t *)self_in,2);
+    return mp_const_none;
+}
+
+MP_DEFINE_CONST_FUN_OBJ_1(sdcard_umount_obj, sdcard_umount;
+
 // attributes
 
 void sdcard_obj_attr(mp_obj_t self_in, qstr attr, mp_obj_t *dest){
@@ -92,7 +122,12 @@ void sdcard_obj_attr(mp_obj_t self_in, qstr attr, mp_obj_t *dest){
     if (dest[0] == MP_OBJ_NULL) {
         if (attr == MP_QSTR_type) {
             value = common_hal_sdcard_type(self); // Call previously defined unction
-            dest[0] = mp_obj_new_int(value); // This the MicroPython float type, should match with the data type
+            dest[0] = mp_obj_new_int(value); // This the MicroPython int type, should match with the data type
+            return;
+        }
+		else if (attr == MP_QSTR_size) {
+            value = common_hal_sdcard_ioctl(self, 4) * common_hal_sdcard_ioctl(self, 5); // Call previously defined unction
+            dest[0] = mp_obj_new_int(value); // This the MicroPython int type, should match with the data type
             return;
         }
     }
@@ -107,6 +142,8 @@ const mp_rom_map_elem_t sdcard_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_readblocks),  MP_ROM_PTR(&sdcard_readBlocks_obj) },
 	{ MP_ROM_QSTR(MP_QSTR_writeblocks),  MP_ROM_PTR(&sdcard_writeBlocks_obj) },
 	{ MP_ROM_QSTR(MP_QSTR_ioctl),  MP_ROM_PTR(&sdcard_ioctl_obj) },
+	{ MP_ROM_QSTR(MP_QSTR_available),  MP_ROM_PTR(&sdcard_available_obj) },
+	{ MP_ROM_QSTR(MP_QSTR_umount),  MP_ROM_PTR(&sdcard_umount_obj) },
 };
  
 MP_DEFINE_CONST_DICT(sdcard_locals_dict, sdcard_locals_dict_table);
