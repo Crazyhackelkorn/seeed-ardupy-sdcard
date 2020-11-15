@@ -1,7 +1,7 @@
 # Seeed ArduPy SD Card
 ## Introduction
 
-An ArduPy library for SD card. Mount a FAT formatted SD card in to the vFAT of Micropython. So that standard functions for read and write Data can be used.
+An ArduPy library for SD card. Mount a FAT formatted SD card in to the vFAT of Micropython. So that standard functions for read and write Data can be used. It uses an modyfied [Seeed Arduino SD driver](https://github.com/Crazyhackelkorn/Seeed_Arduino_SD)
 
 ## How to binding with ArduPy
 - Install [AIP](https://github.com/Seeed-Studio/ardupy-aip)
