@@ -7,6 +7,6 @@
     },
     "dependencies": [{
         "name": "Seeed_Arduino_SDCard",
-        "url": "https://github.com/Crazyhackelkorn/Seeed_Arduino_SD/archive/v2.0.1.zip"
+        "url": "https://github.com/Crazyhackelkorn/Seeed_Arduino_SD/archive/v2.1.0.zip"
     }]
 }
