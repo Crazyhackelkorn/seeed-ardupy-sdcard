@@ -6,7 +6,7 @@ An ArduPy library for SD card. Mount a FAT formatted SD card in to the vFAT of M
 ## How to binding with ArduPy
 - Install [AIP](https://github.com/Seeed-Studio/ardupy-aip)
 ```shell
-pip3 install aip
+pip3 install ardupy-aip
 ```
 - Build firmware with Seeed ArduPy SD Card
 ```shell
